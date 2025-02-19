@@ -1,6 +1,6 @@
 import Controllers.StoreOrdersControllers;
 import Models.AddPlaceAnOrderOnAPetResponse;
-import Models.StoreOrders;
+import Models.OrderIdResponse;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
@@ -9,16 +9,15 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 
 import static Constants.CommonConstants.BASE_URL;
-import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static Constants.CommonConstants.BASE_URL;
 import static Controllers.StoreOrdersControllers.STORE_ORDERS_ENDPOINT;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static testData.TestData.DEFAULT_ORDER_BY_ID;
 import static testData.TestData.DEFAULT_STORE_ORDERS;
 
 
@@ -58,6 +57,8 @@ public class ApiStoreOrdersTests {
                         .body("status", Matchers.equalTo("placed"))
                         .body("complete", Matchers.equalTo(true));
 
+        System.out.println(response);
+
     }
 /*
     StoreOrders storeOrders = new StoreOrders(
@@ -79,6 +80,18 @@ public class ApiStoreOrdersTests {
         assertEquals(0,createStoreOrdersResponse.getQuantity());
         Assertions.assertEquals(response.body().jsonPath().get("status"), "placed");
         Assertions.assertNotNull(response.body().jsonPath().getChar("shipDate"), "SHIPDATE is null!");
+    }
+
+    @Test
+    void findOrdersByIdControllerTest(){
+
+        Response response = new StoreOrdersControllers().findOrdersById(DEFAULT_ORDER_BY_ID);
+        Assertions.assertEquals(200,response.getStatusCode());
+
+        if (response.getContentType() != null && response.getContentType().contains("application/json")) {
+            OrderIdResponse orderIdResponse = response.as(OrderIdResponse.class);
+            Assertions.assertNotNull(response.body().jsonPath().getInt("id"), "ID is null!");
+        }
     }
 
 }
