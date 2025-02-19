@@ -91,6 +91,8 @@ public class ApiStoreOrdersTests {
         if (response.getContentType() != null && response.getContentType().contains("application/json")) {
             OrderIdResponse orderIdResponse = response.as(OrderIdResponse.class);
             Assertions.assertNotNull(response.body().jsonPath().getInt("id"), "ID is null!");
+        } else {
+            System.out.println("Response is not JSON. Raw response: " + response.getBody().asString());
         }
     }
 
