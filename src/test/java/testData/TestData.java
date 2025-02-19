@@ -1,5 +1,6 @@
 package testData;
 
+import Models.OrderById;
 import Models.StoreOrders;
 import io.restassured.builder.RequestSpecBuilder;
 
@@ -14,5 +15,10 @@ public class TestData {
             .complete(true)
             .build();
     public static final StoreOrders INVALID_STORE_ORDERS = StoreOrders.builder().build();
-    }
 
+
+    public static final OrderById DEFAULT_ORDER_BY_ID = OrderById.builder()
+            .orderId(1)
+            .build();
+
+}

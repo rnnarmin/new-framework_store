@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.OrderById;
 import Models.StoreOrders;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -25,6 +26,14 @@ public class StoreOrdersControllers {
                 .body(storeOrders)
                 .when()
                 .post(STORE_ORDERS_ENDPOINT)
+                .andReturn();
+    }
+
+    public Response findOrdersById(OrderById orderById) {
+        return given(this.requestSpecification)
+                .body(orderById)
+                .when()
+                .get(STORE_ORDERS_ENDPOINT + "/" + 1)
                 .andReturn();
     }
 }
