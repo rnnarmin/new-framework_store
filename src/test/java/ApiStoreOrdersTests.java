@@ -1,5 +1,7 @@
 import Controllers.StoreOrdersControllers;
 import Models.AddPlaceAnOrderOnAPetResponse;
+import Models.DeleteOrdersById;
+import Models.DeleteOrdersByIdResponse;
 import Models.OrderIdResponse;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
@@ -91,7 +93,27 @@ public class ApiStoreOrdersTests {
         if (response.getContentType() != null && response.getContentType().contains("application/json")) {
             OrderIdResponse orderIdResponse = response.as(OrderIdResponse.class);
             Assertions.assertNotNull(response.body().jsonPath().getInt("id"), "ID is null!");
+        } else {
+            System.out.println("Response is not JSON. Raw response: " + response.getBody().asString());
         }
+    }
+
+    @Test
+    void deleteOrdersByIdControllerTest(){
+
+        Response response = new StoreOrdersControllers().deleteOrdersById(new DeleteOrdersById());
+        Assertions.assertEquals(404,response.getStatusCode());
+
+        if (response.getContentType() != null && response.getContentType().contains("application/json")) {
+            DeleteOrdersByIdResponse deleteOrdersByIdResponse = response.as(DeleteOrdersByIdResponse.class);
+            Assertions.assertEquals("Order Not Found", deleteOrdersByIdResponse.getMessage());
+            Assertions.assertEquals(404, deleteOrdersByIdResponse.getCode());
+            Assertions.assertEquals("unknown", deleteOrdersByIdResponse.getType());
+        }
+        else {
+            System.out.println("Response is not JSON. Raw response: " + response.getBody().asString());
+        }
+
     }
 
 }

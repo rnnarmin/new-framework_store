@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.DeleteOrdersById;
 import Models.OrderById;
 import Models.StoreOrders;
 import io.restassured.response.Response;
@@ -34,6 +35,14 @@ public class StoreOrdersControllers {
                 .body(orderById)
                 .when()
                 .get(STORE_ORDERS_ENDPOINT + "/" + 1)
+                .andReturn();
+    }
+
+    public Response deleteOrdersById(DeleteOrdersById deleteordersById) {
+        return given(this.requestSpecification)
+                .body(deleteordersById)
+                .when()
+                .delete(STORE_ORDERS_ENDPOINT + "/" + 1)
                 .andReturn();
     }
 }

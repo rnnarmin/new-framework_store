@@ -20,5 +20,6 @@ public class TestData {
     public static final OrderById DEFAULT_ORDER_BY_ID = OrderById.builder()
             .orderId(1)
             .build();
+    public static final OrderById INVALID_ORDER_BY_ID = OrderById.builder().build();
 
 }
